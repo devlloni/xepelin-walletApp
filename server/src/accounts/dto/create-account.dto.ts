@@ -14,4 +14,8 @@ export class CreateAccountDto {
     @IsString()
     @IsNotEmpty()
     readonly email: string;
+
+    @IsString()
+    @IsNotEmpty()
+    readonly password: string;
 }

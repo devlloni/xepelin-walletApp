@@ -15,6 +15,7 @@ const handler = NextAuth({
                         email: user.email,
                         name: user.name,
                         balance: 0,
+                        accountNumber: 11111111
                         // image: user.image,
                         // googleId: user.id,
                     });

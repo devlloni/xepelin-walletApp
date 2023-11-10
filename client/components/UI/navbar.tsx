@@ -10,11 +10,9 @@ const NavBar = () => {
     const { data: session } = useSession();
     const sessionImage: string = session?.user?.image || 'https://w7.pngwing.com/pngs/178/595/png-transparent-user-profile-computer-icons-login-user-avatars-thumbnail.png';
     const navigation = [
-        { name: 'Dashboard', href: '#', current: true },
-        { name: 'Team', href: '#', current: false },
-        { name: 'Projects', href: '#', current: false },
-        { name: 'Calendar', href: '#', current: false },
-        { name: 'Reports', href: '#', current: false },
+        { name: 'Tablero', href: '/dashboard', current: true },
+        { name: 'Transacciones', href: '/transactions', current: false },
+        { name: 'Información', href: '#', current: false },
     ]
     const userNavigation = [
         { name: 'Tu perfil', href: '#' },
@@ -37,7 +35,7 @@ const NavBar = () => {
         )
     } else {
         return (
-            <>
+            <div>
                {session?.user ? (
                 <NavbarLoggedIn
                     navigation={navigation}
@@ -54,7 +52,7 @@ const NavBar = () => {
                     signIn={signIn}
                 />
                )} 
-            </>
+            </div>
         )
     }
 }
