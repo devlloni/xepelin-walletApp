@@ -16,4 +16,7 @@ export class Accounts {
 
     @Column()
     email: string;
+
+    @Column()
+    password: string;
 }
