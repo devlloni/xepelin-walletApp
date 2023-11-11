@@ -27,4 +27,7 @@ export class AccountsController {
     create(@Body(new ValidationPipe()) createAccountDto: CreateAccountDto): Promise<Accounts> {
         return this.accountsService.create(createAccountDto);
     }
+
+    // @Post()
+    // create(@Body(new ValidationPipe()) )
 }

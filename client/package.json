@@ -12,7 +12,9 @@
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "axios": "^1.6.1",
+    "cookie": "^0.6.0",
     "heroicons-react": "^1.4.1",
+    "jsonwebtoken": "^9.0.2",
     "next": "14.0.1",
     "next-auth": "^4.24.4",
     "react": "^18",
@@ -21,6 +23,8 @@
   },
   "devDependencies": {
     "@tailwindcss/forms": "^0.5.6",
+    "@types/cookie": "^0.5.4",
+    "@types/jsonwebtoken": "^9.0.5",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
