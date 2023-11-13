@@ -13,49 +13,41 @@ export class AccountsService {
         private accountsRepository: Repository<Accounts>,
     ) {}
     
-    getAccounts(): string {
-        return "Lautaro Delloni - 8717837812813"
+    async getAccount(id: number): Promise<Accounts> {
+        const account = await this.accountsRepository.findBy({id});
+        if (!account || account.length < 1) {
+            throw new Error('Cuenta no encontrada');
+        }
+        return account[0];
     }
     
     findAll(): Promise<Accounts[]> {
         return this.accountsRepository.find();
     }
 
-    findOne(id: number): Promise<Accounts | null > {
-        return this.accountsRepository.findOneBy({ id });
+    async getAccountBalance(id: number): Promise<number> {
+        const account = await this.accountsRepository.findOne({
+            where: { id: id },
+        });
+        if (!account) {
+            throw new Error('Cuenta no encontrada.');
+        }
+        return account.balance;
     }
 
-    findOneByNumber(accountNumber: number): Promise<Accounts | null > {
-        return this.accountsRepository.findOneBy({ accountNumber })
+    async getAccountBalanceByAccount(accountNumber: number): Promise<number> {
+        const account = await this.accountsRepository.findOne({
+            where: { accountNumber: accountNumber },
+        });
+        if (!account) {
+            throw new Error('Cuenta no encontrada');
+        }
+        return account.balance;
     }
 
     async remove(id: number): Promise<void> {
         await this.accountsRepository.delete(id);
     }
-
-    // async create(createAccountDto: CreateAccountDto): Promise<Accounts> {
-    //     const lastAccount = await this.accountsRepository
-    //         .createQueryBuilder("accounts")
-    //         .select("MAX(accounts.accountNumber)", "max")
-    //         .getRawOne();
-    
-    //     let nextAccountNumber = 100000000; // CBU base de 9 dígitos
-    //     if (lastAccount && lastAccount.max) {
-    //         const maxAccountNumber = lastAccount && lastAccount.max 
-    //         ? parseInt(lastAccount.max, 10)
-    //         : 100000000; // Este es el valor base para 9 dígitos.
-    //         console.log('maxNumber: ', maxAccountNumber);
-    //         if (maxAccountNumber >= 100000000 && maxAccountNumber < 999999999) {
-    //             nextAccountNumber = maxAccountNumber + 1;
-    //         } else {
-    //             throw new Error('Se ha alcanzado el número máximo de cuenta.');
-    //         }
-    //     }
-    
-    //     const newAccount = this.accountsRepository.create(createAccountDto);
-    //     newAccount.accountNumber = nextAccountNumber;
-    //     return this.accountsRepository.save(newAccount);
-    // }
 
     async create(createAccountDto: CreateAccountDto): Promise<Accounts> {
         const existingAccount = await this.accountsRepository.findOne({
@@ -74,11 +66,9 @@ export class AccountsService {
         }
         const hashedPassword = await bcrypt.hash(createAccountDto.password, 10)
         const newAccount = this.accountsRepository.create({
-            ...CreateAccountDto,
+            ...createAccountDto,
             password: hashedPassword,
         });
         return this.accountsRepository.save(newAccount)
     }
-
-    // async login()
 }

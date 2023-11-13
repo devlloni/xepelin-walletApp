@@ -49,9 +49,10 @@ const Nav = ({menuList} : HomeNavbarMenuList) => {
                     </Link>
 
                     <div className="space-x-4 xl:space-x-8 hidden md:block">
-                        {menuList.map((item) => (
+                        {menuList.map((item, index) => (
                             <Link
                                 href={item.href}
+                                key={index}
                                 className="transition-all duration-300 font-medium py-2 xl:py-3 hover:text-indigo-600"
                             >
                                 {item.name}
@@ -150,14 +151,14 @@ const Nav = ({menuList} : HomeNavbarMenuList) => {
                             href="/auth/login"
                             className="transition-all duration-300 px-3 lg:px-4 xl:px-8 font-medium py-2 xl:py-3 hover:text-indigo-600"
                         >
-                            Login
+                            Ingresar
                         </Link>
 
                         <Link
-                            href="/register"
+                            href="/auth/register"
                             className="transition-all duration-300 px-3 lg:px-4 xl:px-8 font-medium py-2 xl:py-3 bg-indigo-600 text-white rounded-md focus:outline-none hover:bg-indigo-700 focus:ring focus:border-indigo-500 focus:ring-indigo-500/50"
                         >
-                            Sign Up
+                            Registrarme
                         </Link>
                     </div>
                 )}
@@ -228,19 +229,19 @@ const Nav = ({menuList} : HomeNavbarMenuList) => {
                                         <div className="flex items-center space-x-3">
                                             <Menu.Item>
                                                 <Link
-                                                    href="/login"
+                                                    href="/auth/login"
                                                     className="w-1/2 text-center transition-all duration-300 px-3 font-medium py-1.5 text-indigo-900 border border-indigo-900 rounded-md focus:outline-none hover:text-white hover:bg-indigo-700 focus:ring focus:border-indigo-500 focus:ring-indigo-500/50"
                                                 >
-                                                    Login
+                                                    Ingresar
                                                 </Link>
                                             </Menu.Item>
 
                                             <Menu.Item>
                                                 <Link
-                                                    href="/register"
+                                                    href="/auth/register"
                                                     className="transition-all block text-center w-1/2 duration-300 px-3 lg:px-4 xl:px-8 font-medium py-2 xl:py-3 border border-indigo-600 bg-indigo-600 text-white rounded-md focus:outline-none hover:bg-indigo-700 focus:ring focus:border-indigo-500 focus:ring-indigo-500/50"
                                                 >
-                                                    Sign Up
+                                                    Registrarme
                                                 </Link>
                                             </Menu.Item>
                                         </div>

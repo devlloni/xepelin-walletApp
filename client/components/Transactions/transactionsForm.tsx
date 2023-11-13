@@ -5,178 +5,64 @@ import { IoMdSync } from 'react-icons/io';
 
 import { Loader } from '../UI/helpers/utils';
 
-const TransactionsForm = () => {
-    const defaultMessage = {
-        amount: [],
-        accountNumber: []
-    }
+const TransactionsForm = ({ accountNumber, transfer } : { accountNumber: number; transfer: Function }) => {
     
+    const [ accountNumberForm, setAccountNumberForm ] = useState('');
+    const [ amount, setAmount ] = useState('');
 
-    const [errorMessage, setErrorMessage] = useState(defaultMessage);
-    const [loading, setLoading] = useState(false);
-    const [amount, setAmount] = useState("");
-    const [accountNumber, setAccountNumber] = useState("");
-
-    //!TODO
-    const submit = () => {
-        alert('submit form');
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (accountNumber.toString() === accountNumberForm || accountNumberForm.length < 0 || accountNumberForm.length === 0) {
+          alert('El CBU debe ser válido: no puede ser tu mismo número de cuenta.');
+        } else if (Number(amount) === 0 || amount.length < 0 || Number(amount) < 0) {
+          alert('El monto debe ser válido, no puede ser igual o menor a 0.');
+        } else {
+          transfer(accountNumber, parseInt(accountNumberForm), parseInt(amount));
+        }   
     }
 
     return(
-        <>
-            <div className="rounded-lg bg-indigo-50 p-4 lg:p-5">
-                <div className="flex space-x-3 items-center">
-                    <div className="w-2/3 relative">
-                        <h6 className="text-sm text-indigo-900">You send</h6>
-                        <input
-                            type="number"
-                            className={`p-0 w-full bg-indigo-50 border-0 border-b-2 ${
-                                errorMessage.amount.length
-                                    ? "border-red-600 focus:border-red-600"
-                                    : "border-gray-300 focus:border-indigo-800"
-                            } text-indigo-800 placeholder-indigo-900 placeholder-opacity-80 font-bold text-xl lg:text-2xl focus:ring-0`}
-                            placeholder="0,000"
-                            value={amount}
-                            onChange={e => setAmount(e.target.value)}
-                        />
-                        {errorMessage.amount.length > 0 && (
-                            <p className="absolute text-sm text-red-600">{errorMessage.amount}</p>
-                        )}
-                    </div>
-
-                    <Menu>
-                        {({ open }) => (
-                            <div className="relative w-1/4 md:w-1/3">
-                                <Menu.Button className="w-full shadow-sm flex items-center space-x-2 justify-center text-indigo-900 bg-white py-3 md:py-4 rounded-lg md:text-lg font-bold uppercase font-semibold">
-                                    {/* <span>{currency}</span> */}
-                                    <HiChevronRight
-                                        className={`transition-all duration-300 ${
-                                            open ? "rotate-90" : ""
-                                        } h-6 w-6`}
-                                    />
-                                </Menu.Button>
-
-                                <Transition
-                                    enter="transition duration-100 ease-out"
-                                    enterFrom="transform scale-95 opacity-0"
-                                    enterTo="transform scale-100 opacity-100"
-                                    leave="transition duration-75 ease-out"
-                                    leaveFrom="transform scale-100 opacity-100"
-                                    leaveTo="transform scale-95 opacity-0"
-                                >
-                                    <Menu.Items>
-                                        <div className="absolute right-0 z-10 px-2 py-1 mt-1 w-44 text-gray-600 bg-white border rounded-md shadow">
-                                            <Menu.Item
-                                                as={"button"}
-                                                className="flex items-center space-x-3 px-3 py-2.5 text-sm hover:text-indigo-600"
-                                            >
-                                                <span>XOF</span>
-                                                <span>FRANC CFA</span>
-                                            </Menu.Item>
-                                        </div>
-                                    </Menu.Items>
-                                </Transition>
-                            </div>
-                        )}
-                    </Menu>
-                </div>
-            </div>
-            <div className="space-y-3 lg:space-y-5 text-indigo-900">
-                <div className="flex items-center space-x-4 text-indigo-600 text-sm">
-                    <IoMdSync className="w-5 h-5" />
-                    <span>Show calculations</span>
-                </div>
-
-                <div className="flex items-center">
-                    <div className="w-1/2">
-                        <span>1 XOF = 1 XOF</span>
-                    </div>
-                    <div className="w-1/2">Currency</div>
-                </div>
-
-                <div className="flex items-center">
-                    <div className="w-1/2">
-                        <span>
-                            {amount}
-                        </span>
-                    </div>
-                    <div className="w-1/2">TVA / Total</div>
-                </div>
-
-                <div className="flex items-center">
-                    <div className="w-1/2">
-                        <span>{amount}</span>
-                    </div>
-                    <div className="w-1/2">Recipient gets</div>
-                </div>
-            </div>
-            <div className="rounded-lg bg-indigo-50 p-4 lg:p-5">
-                <div className="flex space-x-3 items-center">
-                    <div className="w-2/3 relative">
-                        <h6 className="text-sm text-indigo-900">CBU del destinatario</h6>
-                        <input
-                            type="tel"
-                            className={`p-0 w-full bg-indigo-50 border-0 border-b-2 ${
-                                errorMessage.accountNumber.length
-                                    ? "border-red-600 focus:border-red-600"
-                                    : "border-gray-300 focus:border-indigo-800"
-                            } text-indigo-800 placeholder-indigo-900 placeholder-opacity-80 font-bold text-xl lg:text-2xl focus:ring-0`}
-                            placeholder="68 89 54 89"
-                            value={accountNumber}
-                            onChange={e => setAccountNumber(e.target.value)}
-                        />
-                        {errorMessage.accountNumber.length > 0 && (
-                            <p className="absolute text-sm text-red-600">
-                                {errorMessage.accountNumber}
-                            </p>
-                        )}
-                    </div>
-
-                    {/* <Menu>
-                        {({ open }) => (
-                            <div className="relative w-1/4 md:w-1/3">
-                            
-                                <Transition
-                                    enter="transition duration-100 ease-out"
-                                    enterFrom="transform scale-95 opacity-0"
-                                    enterTo="transform scale-100 opacity-100"
-                                    leave="transition duration-75 ease-out"
-                                    leaveFrom="transform scale-100 opacity-100"
-                                    leaveTo="transform scale-95 opacity-0"
-                                >
-                                    <Menu.Items>
-                                        <div className="absolute right-0 z-10 px-2 py-1 mt-1 w-44 text-gray-600 bg-white border rounded-md shadow">
-                                            {countries.map((item, index) => (
-                                                <Menu.Item
-                                                    key={index}
-                                                    as={"button"}
-                                                    className="flex items-center space-x-3 px-3 py-2 text-sm hover:text-indigo-600"
-                                                    onClick={() => setCountry(item)}
-                                                >
-                                                    <img
-                                                        src={`/images/${item.img}.svg`}
-                                                        className="rounded-full h-5 w-5"
-                                                        alt=""
-                                                    />
-                                                    <span>{item.text}</span>
-                                                </Menu.Item>
-                                            ))}
-                                        </div>
-                                    </Menu.Items>
-                                </Transition>
-                            </div>
-                        )}
-                    </Menu> */}
-                </div>
-            </div>
+        <div className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4">
+        <h2 className="text-lg mb-4 font-semibold text-gray-700">Transferir fondos</h2>
+        <form onSubmit={handleSubmit}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="accountNumber">
+              Número de cuenta (CBU)
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="accountNumber"
+              type="text"
+              placeholder="Nro. Cuenta"
+              value={accountNumberForm}
+              onChange={(e) => setAccountNumberForm(e.target.value)}
+              required
+            />
+          </div>
+          <div className="mb-6">
+            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="amount">
+              Cantidad
+            </label>
+            <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+              id="amount"
+              type="number"
+              placeholder="Cantidad $"
+              value={amount}
+              onChange={(e) => setAmount(e.target.value)}
+              required
+            />
+          </div>
+          <div className="flex items-center justify-between">
             <button
-                onClick={submit}
-                className="w-full flex items-center justify-center space-x-3 transition-all block text-center duration-300 px-3 lg:px-4 xl:px-8 font-medium lg:text-lg py-3 bg-indigo-600 text-white rounded-md focus:outline-none hover:bg-indigo-700 focus:ring focus:border-indigo-500 focus:ring-indigo-500/50"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+              type="submit"
             >
-                {loading && <Loader color={"white"} />}
-                <span>Get started</span>
+              Transferir
             </button>
-        </>
+          </div>
+        </form>
+      </div>
     )
 }
 
