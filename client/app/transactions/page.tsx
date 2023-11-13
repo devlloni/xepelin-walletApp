@@ -1,6 +1,7 @@
 "use client"
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 import { useSession, getSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
@@ -81,12 +82,12 @@ const Transactions = () => {
                             date: resp.data.date,
                         }
                         setTransactionsList((list:any) => [...list, newTransfer]);
-                        alert('Transferencia envíada con éxito! :D');
+                        toast('Transferencia enviada con éxito.', { type: 'success' });
                     } else { 
-                        alert('Hubo un error en su envío de dinero.')
+                        toast('Hubo un error en su envío de dinero.', { type: 'error' });
                     }
                 } else {
-                    alert('Error en validación datos.');
+                    toast('Error en validación de datos.', { type: 'error' });
                 }
             }
     }

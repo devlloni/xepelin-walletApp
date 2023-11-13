@@ -8,7 +8,7 @@ Consta con funcionalidades básicas como creación de cuenta, log-in, autenticac
 
 ### Prerrequisitos
 
-Qué cosas necesitas instalar el software y cómo instalarlas.
+Qué cosas necesitas instalar:
 
 ```bash
 node.js (versión +18.0)
@@ -122,7 +122,7 @@ Las transferencias/transacciones pueden ser de 2 tipos:
 
 - POST /transactions - Devuelve el registro de transacción luego de realizar la operación entre 1 o más cuentas.
 
-```json
+```bash
 {
     "from": number // 0 si es deposit(sucursal) - accountNumber de la cuenta si es transferencia.
     "to": number,
@@ -138,4 +138,12 @@ Las transferencias/transacciones pueden ser de 2 tipos:
 
 - GET /transactions/to/:toAccount - Devuelve un arreglo de las transacciones que se realizaron HACIA un número de cuenta.
 
-# FINALIZAR END.
+
+### Licencia
+
+Este proyecto está licenciado bajo la licencia MIT.
+
+Cualquier consulta, pueden comunicarse conmigo a través de mi mail personal: 
+ - dellonilautaro@gmail.com
+ - o, a través de WhatsApp: +54 3493 459368
+ - vía discord: @devllo
