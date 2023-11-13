@@ -1,14 +1,54 @@
 "use client"
 import React, { useState } from 'react';
+import axios from 'axios';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
+import { API_BASE_URL } from '@/config/utils';
 
 const RegisterForm = () => {
-    
+    const router = useRouter();
     const [ name, setName ] = useState("");
     const [ email, setEmail ] = useState("");
     const [ password, setPassword ] = useState("");
     const [ confirmPassword, setConfirmPassword ] = useState("");
     const [ accountNumber, setAccountNumber ] = useState("");
+
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (name.length > 0 && email.length > 0 && password.length > 0 && accountNumber.length > 0){
+            if(password === confirmPassword){
+                try {
+                    const result = await axios.post(`${API_BASE_URL}/accounts`, {
+                        name,
+                        email,
+                        password,
+                        accountNumber: Number(accountNumber),
+                        balance: 100,
+                    });
+                    console.log(result);
+                    if (result.status === 201 && result.data) {
+                        toast(`¡Cuenta creada con éxito! ${result.data.name} | ${result.data.email}`, { type: 'success' });
+                        toast('Ingresa tus datos para continuar.', { type: 'success' });
+                        setTimeout(() => {
+                            router.push('/auth/login');
+                        }, 1000);
+                    }
+                } catch (error) {
+                    if(axios.isAxiosError(error) && error.response) {
+                        toast.error(`¡Ocurrió un error! ${error.response.data.message}`, { type: 'error' });
+                    } else {
+                        console.log('ERROR', error);
+                    }
+                }
+            } else {
+                toast('Las contraseñas no coinciden!', { type: 'error' });
+            }
+        } else {
+            toast('Todos los campos deben estar completos', { type: 'error' });
+        }
+        
+    }
 
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -25,7 +65,7 @@ const RegisterForm = () => {
 
             <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
                 <div className="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
-                    <form className="mb-0 space-y-6" action="#" method="POST">
+                    <form className="mb-0 space-y-6" onSubmit={handleSubmit}>
                         <div>
                             <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                                 Correo electrónico
