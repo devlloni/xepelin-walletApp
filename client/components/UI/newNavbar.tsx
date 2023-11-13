@@ -49,9 +49,10 @@ const Nav = ({menuList} : HomeNavbarMenuList) => {
                     </Link>
 
                     <div className="space-x-4 xl:space-x-8 hidden md:block">
-                        {menuList.map((item) => (
+                        {menuList.map((item, index) => (
                             <Link
                                 href={item.href}
+                                key={index}
                                 className="transition-all duration-300 font-medium py-2 xl:py-3 hover:text-indigo-600"
                             >
                                 {item.name}

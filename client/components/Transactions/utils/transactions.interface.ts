@@ -1,9 +1,11 @@
 export interface Transactions {
-    accountNumber: number,
+    from: number,
+    to: number,
     amount: number,
     date: Date
 }
 
 export interface TransactionsListsProps {
-    transactions: Transactions[],
+    transactions: Transactions[] | null,
+    accountNumber: number;
 }

@@ -13,20 +13,36 @@ export class AccountsService {
         private accountsRepository: Repository<Accounts>,
     ) {}
     
-    getAccounts(): string {
-        return "Lautaro Delloni - 8717837812813"
+    async getAccount(id: number): Promise<Accounts> {
+        const account = await this.accountsRepository.findBy({id});
+        if (!account || account.length < 1) {
+            throw new Error('Cuenta no encontrada');
+        }
+        return account[0];
     }
     
     findAll(): Promise<Accounts[]> {
         return this.accountsRepository.find();
     }
 
-    findOne(id: number): Promise<Accounts | null > {
-        return this.accountsRepository.findOneBy({ id });
+    async getAccountBalance(id: number): Promise<number> {
+        const account = await this.accountsRepository.findOne({
+            where: { id: id },
+        });
+        if (!account) {
+            throw new Error('Cuenta no encontrada.');
+        }
+        return account.balance;
     }
 
-    findOneByNumber(accountNumber: number): Promise<Accounts | null > {
-        return this.accountsRepository.findOneBy({ accountNumber })
+    async getAccountBalanceByAccount(accountNumber: number): Promise<number> {
+        const account = await this.accountsRepository.findOne({
+            where: { accountNumber: accountNumber },
+        });
+        if (!account) {
+            throw new Error('Cuenta no encontrada');
+        }
+        return account.balance;
     }
 
     async remove(id: number): Promise<void> {
@@ -50,11 +66,9 @@ export class AccountsService {
         }
         const hashedPassword = await bcrypt.hash(createAccountDto.password, 10)
         const newAccount = this.accountsRepository.create({
-            ...CreateAccountDto,
+            ...createAccountDto,
             password: hashedPassword,
         });
         return this.accountsRepository.save(newAccount)
     }
-
-    // async login()
 }

@@ -4,6 +4,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { Transactions } from "./dto/transactions.entity";
 import { TransactionsController } from "./transactions.controller";
 import { TransactionsService } from "./transactions.service";
+import { BalanceGateway } from "./helpers/balance.gateway";
 
 // import 
 
@@ -12,7 +13,7 @@ import { TransactionsService } from "./transactions.service";
         TypeOrmModule.forFeature([Transactions])
     ],
     controllers: [TransactionsController],
-    providers: [TransactionsService]
+    providers: [TransactionsService, BalanceGateway]
 })
 
 export class TransactionsModule {}

@@ -12,7 +12,8 @@ const NavBar = () => {
     const navigation = [
         { name: 'Tablero', href: '/dashboard', current: true },
         { name: 'Transacciones', href: '/transactions', current: false },
-        { name: 'Información', href: '#', current: false },
+        { name: 'Ingresar dinero', href: '/transactions/deposit', current: false },
+        { name: 'Retirar dinero', href: '/transactions/withdrawal', current: false },
     ]
     const userNavigation = [
         { name: 'Tu perfil', href: '#' },

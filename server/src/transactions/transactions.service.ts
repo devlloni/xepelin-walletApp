@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Inject } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository, DataSource } from "typeorm";
 
@@ -7,12 +7,15 @@ import { Accounts } from "src/accounts/dto/accounts.entity";
 import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { transactionsConstants as t } from './helpers/constants';
 
+import { BalanceGateway } from "./helpers/balance.gateway";
+
 @Injectable()
 export class TransactionsService {
     constructor(
         @InjectRepository(Transactions)
         private transactionsRepository: Repository<Transactions>,
-        private dataSource: DataSource
+        private dataSource: DataSource,
+        @Inject(BalanceGateway) private balanceGateway: BalanceGateway,
     ) { }
 
     async create(createTransactionDto: CreateTransactionDto): Promise<Transactions> {
@@ -28,7 +31,6 @@ export class TransactionsService {
                 await this.updateBalance(queryRunner, -amount, from);
             }
             if (transactionType === t.types.deposito && from === 0) {
-                console.log('INGRESA X 2DO IF');
                 await queryRunner.manager
                     .createQueryBuilder()
                     .update(Accounts)
@@ -37,7 +39,6 @@ export class TransactionsService {
                     .execute();
             }
             if (transactionType === t.types.deposito && to && (from !== 0)) {
-                console.log('INGRESA X 3ER IF')
                 const accountFromExists = await queryRunner.manager.createQueryBuilder()
                     .select('1')
                     .from(Accounts, 'account')
@@ -62,6 +63,8 @@ export class TransactionsService {
                         })
                         .where('accountNumber IN (:from, :to)', { from, to })
                         .execute();
+                    await this.notifyUserBalanceUpdated(from, -amount);
+                    await this.notifyUserBalanceUpdated(to, +amount);
                 }
                 else {
                     throw new HttpException('Una o ambas cuentas no existen, no se pudo realizar la transacción', HttpStatus.BAD_REQUEST);
@@ -86,8 +89,27 @@ export class TransactionsService {
         }
     }
 
-    getTransactions(): string {
-        return "Prueba de transactions"
+    findAll(): Promise<Transactions[]> {
+        return this.transactionsRepository.find();
+    }
+
+    findByFrom(from: number): Promise<Transactions[]> {
+        return this.transactionsRepository.findBy({ from });
+    }
+
+    findByTo(to: number): Promise<Transactions[]> {
+        return this.transactionsRepository.findBy({ to });
+    }
+
+    findByAccountNumber(accountNumber: number): Promise<Transactions[]> {
+        return this.transactionsRepository.createQueryBuilder('transaction')
+            .where('transaction.from = :accountNumber', { accountNumber })
+            .orWhere('transaction.to = :accountNumber', { accountNumber })
+            .getMany();
+    }
+
+    private async notifyUserBalanceUpdated(accountNumber: number, newBalance: number) {
+        this.balanceGateway.server.to(`account-${accountNumber}`).emit('balanceUpdate', newBalance);
     }
 
 

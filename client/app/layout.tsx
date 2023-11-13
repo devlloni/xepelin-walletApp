@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
-
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 import './globals.css'
 import { NavBar } from '../components/index'
 import { Providers } from '../context/providers'
@@ -22,6 +23,15 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <NavBar />
+          <ToastContainer
+            position='top-right'
+            autoClose={2000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            draggable={false}
+            pauseOnHover
+            closeOnClick
+          />
           {children}
         </Providers>
       </body>

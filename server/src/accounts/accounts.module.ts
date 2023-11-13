@@ -10,6 +10,7 @@ import { Accounts } from "./dto/accounts.entity";
         TypeOrmModule.forFeature([Accounts])
     ],
     controllers: [AccountsController],
-    providers: [AccountsService]
+    providers: [AccountsService],
+    exports: [AccountsService, TypeOrmModule.forFeature([Accounts])]
 })
 export class AccountsModule {}

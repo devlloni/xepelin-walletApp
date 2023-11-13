@@ -1,7 +1,15 @@
-import React from 'react';
+"use client"
+import React, { useState } from 'react';
+import Link from 'next/link';
 
 const RegisterForm = () => {
     
+    const [ name, setName ] = useState("");
+    const [ email, setEmail ] = useState("");
+    const [ password, setPassword ] = useState("");
+    const [ confirmPassword, setConfirmPassword ] = useState("");
+    const [ accountNumber, setAccountNumber ] = useState("");
+
     return (
         <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
             <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -27,7 +35,27 @@ const RegisterForm = () => {
                                     id="email"
                                     name="email"
                                     type="email"
+                                    value={email}
+                                    onChange={(e: any) => setEmail(e.target.value)}
                                     autoComplete="email"
+                                    required
+                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+                                Nombre completo
+                            </label>
+                            <div className="mt-1">
+                                <input
+                                    id="name"
+                                    name="name"
+                                    type="text"
+                                    value={name}
+                                    onChange={(e: any) => setName(e.target.value)}
+                                    autoComplete="name"
                                     required
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 />
@@ -43,6 +71,8 @@ const RegisterForm = () => {
                                     id="password"
                                     name="password"
                                     type="password"
+                                    value={password}
+                                    onChange={(e: any) => setPassword(e.target.value)}
                                     autoComplete="new-password"
                                     required
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
@@ -59,7 +89,27 @@ const RegisterForm = () => {
                                     id="password-confirm"
                                     name="password-confirm"
                                     type="password"
+                                    value={confirmPassword}
+                                    onChange={(e: any) => setConfirmPassword(e.target.value)}
                                     autoComplete="new-password"
+                                    required
+                                    className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                                />
+                            </div>
+                        </div>
+
+                        <div>
+                            <label htmlFor="cbu" className="block text-sm font-medium text-gray-700">
+                                Número de cuenta (CBU)
+                            </label>
+                            <div className="mt-1">
+                                <input
+                                    id="cbu"
+                                    name="cbu"
+                                    type="number"
+                                    value={accountNumber}
+                                    onChange={(e: any) => setAccountNumber(e.target.value)}
+                                    autoComplete="cbu"
                                     required
                                     className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                                 />
@@ -75,6 +125,12 @@ const RegisterForm = () => {
                             </button>
                         </div>
                     </form>
+                    <p className="mt-10 text-center text-sm text-gray-500">
+                        ¿Ya eres miembro?{' '}
+                        <Link href="/auth/register" className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">
+                        Ingresa con tus datos
+                        </Link>
+                    </p>
                 </div>
             </div>
         </div>

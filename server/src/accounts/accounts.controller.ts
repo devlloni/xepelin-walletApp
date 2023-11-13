@@ -13,13 +13,18 @@ export class AccountsController {
     }
 
     @Get(':id')
-    getAccountsSingle(@Param('id') id: number): string { 
-        return this.accountsService.getAccounts()
+    getAccountsSingle(@Param('id') id: number): Promise<Accounts> { 
+        return this.accountsService.getAccount(id)
     }
 
-    @Get('account/:number')
-    getAccountByNumber(@Param('number') number: number): Promise<Accounts> {
-        return this.accountsService.findOneByNumber(number)
+    @Get(':id/balance')
+    getAccountBalance(@Param('id') id : number): Promise<number> {
+        return this.accountsService.getAccountBalance(id);
+    }
+
+    @Get('/account/:accountNumber/balance')
+    getAccountBalanceByAccountNumber(@Param('accountNumber') accountNumber: number): Promise<number> {
+        return this.accountsService.getAccountBalanceByAccount(accountNumber);
     }
     
 
@@ -27,7 +32,4 @@ export class AccountsController {
     create(@Body(new ValidationPipe()) createAccountDto: CreateAccountDto): Promise<Accounts> {
         return this.accountsService.create(createAccountDto);
     }
-
-    // @Post()
-    // create(@Body(new ValidationPipe()) )
 }
