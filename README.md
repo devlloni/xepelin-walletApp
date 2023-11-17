@@ -15,6 +15,7 @@ node.js (versión +18.0)
 npm
 XAMPP (O algun servidor MySQL)
 ```
+(Si ya tienes una versión de Nodejs instalada en tu SO, recomiendo utilizar la herramienta ["nvm/windows"](https://github.com/coreybutler/nvm-windows) o ["nvm/mac-linux"](https://github.com/nvm-sh/nvm))
 
 ## Empezando
 
