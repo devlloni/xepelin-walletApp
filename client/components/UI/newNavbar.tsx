@@ -1,6 +1,7 @@
 "use client"
 import { Fragment } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Menu, Transition } from "@headlessui/react";
 import { AiOutlineDashboard } from "react-icons/ai";
 import { HiMenu } from "react-icons/hi";
@@ -12,7 +13,7 @@ import { HomeNavbarMenuList } from "./helpers/utils.interfaces";
 const Nav = ({menuList} : HomeNavbarMenuList) => {
 
     const logout = (navigate: any) => {
-
+        
     }
 
     const checkUser = () => {

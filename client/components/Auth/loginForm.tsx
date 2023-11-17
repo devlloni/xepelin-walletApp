@@ -1,15 +1,21 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { signIn } from 'next-auth/react'; 
+import { signIn, useSession } from 'next-auth/react'; 
 import { useRouter } from 'next/navigation';
 
 const LoginFormComponent = () => {
 
     const router = useRouter();
-
+    const { data: session, status } = useSession();
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
+
+    useEffect(() => {
+      if (status !== 'loading' && status === 'authenticated'){
+        router.push('/dashboard');
+      }
+    }, [session, status]);
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
       event.preventDefault();

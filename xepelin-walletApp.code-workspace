@@ -1,0 +1,30 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"name": "client",
+			"path": "client"
+		},
+		{
+			"name": ".next",
+			"path": "client/.next"
+		},
+		{
+			"name": "types",
+			"path": "client/.next/types"
+		},
+		{
+			"name": "server",
+			"path": "server"
+		}
+	],
+	"settings": {
+		"jest.disabledWorkspaceFolders": [
+			"xepelin-walletApp",
+			".next",
+			"types"
+		]
+	}
+}

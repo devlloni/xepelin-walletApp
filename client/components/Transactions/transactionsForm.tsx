@@ -1,10 +1,4 @@
 import React, { useState } from 'react';
-import { Menu, Transition } from '@headlessui/react';
-import { HiChevronRight } from 'react-icons/hi';
-import { IoMdSync } from 'react-icons/io';
-
-import { Loader } from '../UI/helpers/utils';
-
 const TransactionsForm = ({ accountNumber, transfer } : { accountNumber: number; transfer: Function }) => {
     
     const [ accountNumberForm, setAccountNumberForm ] = useState('');
